@@ -8,13 +8,13 @@ makeCacheMatrix <- function(x = matrix()) {
   xSolve <- NULL
   
   # define set() function to set the contents of the matrix
-  set <- function(xSet) {
+  setMatrix <- function(xSet) {
     x <<- xSet      # set the matrix contents (in the parent environment)
     xSolve <- NULL  # initialize xSolve, since new contents invalidate any previous caching
   }
   
   # define get() function to return the contents of the matrix 
-  get <- function() x
+  getMatrix <- function() x
   
   # define setSolve function to cache a solve for this matrix
   setSolve <- function(s) xSolve <<- s
@@ -23,15 +23,37 @@ makeCacheMatrix <- function(x = matrix()) {
   getSolve <- function() xSolve
   
   # return the getter and setter functions
-  c(set = set, get = get, setSolve = setSolve, getSolve = getSolve)
+  c(set = setMatrix, get = getMatrix, setSolve = setSolve, getSolve = getSolve)
 }
 
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(matrix, ...) {
         ## Return a matrix that is the inverse of 'x'
+  s <- matrix$getSolve()
+  if (!is.null(x)) {
+    message("cache hit")
+    return(s)
+  }
+  s <- solve(matrix$getMatrix())
+  matrix$setSolve(s)
+  return(s)
 }
+
+randomMatrix <- function() {
+  error <- 0
+  count <<- 0
+  repeat {
+    count <- count + 1
+    # print(count)
+    m <- matrix(sample(10,25, replace=1), nrow=5)
+    tryCatch(solve(m), error = function(e) {error <<- 1; message("error")} )
+    if (error == 0) break
+  } 
+  return(m)
+}
+
 
 
 
