@@ -34,7 +34,7 @@ cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
   s <- x$getSolve()
   if (!is.null(s)) {
-    message("cache hit")
+    # message("cache hit")
     return(s)
   }
   message("cache miss! computing solve...")
