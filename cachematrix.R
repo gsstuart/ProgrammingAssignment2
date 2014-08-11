@@ -4,13 +4,14 @@
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-  # initialize xSolve, which will hold the inverted matrix
+
+  # initialize xSolve
   xSolve <- NULL
   
   # define set() function to set the contents of the matrix
   setMatrix <- function(xSet) {
     x <<- xSet      # set the matrix contents (in the parent environment)
-    xSolve <- NULL  # initialize xSolve, since new contents invalidate any previous caching
+    xSolve <<- NULL  # initialize xSolve, since new contents invalidate any previous caching
   }
   
   # define get() function to return the contents of the matrix 
@@ -21,7 +22,7 @@ makeCacheMatrix <- function(x = matrix()) {
   
   # define getSolve function to retrieve the cached solve
   getSolve <- function() xSolve
-  
+    
   # return the getter and setter functions
   c(set = setMatrix, get = getMatrix, setSolve = setSolve, getSolve = getSolve)
 }
@@ -29,15 +30,16 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(matrix, ...) {
+cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  s <- matrix$getSolve()
-  if (!is.null(x)) {
+  s <- x$getSolve()
+  if (!is.null(s)) {
     message("cache hit")
     return(s)
   }
-  s <- solve(matrix$getMatrix())
-  matrix$setSolve(s)
+  message("cache miss! computing solve...")
+  s <- solve(x$get())
+  x$setSolve(s)
   return(s)
 }
 
