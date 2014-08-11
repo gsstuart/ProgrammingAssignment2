@@ -41,18 +41,8 @@ cacheSolve <- function(matrix, ...) {
   return(s)
 }
 
-randomMatrix <- function() {
-  error <- 0
-  count <<- 0
-  repeat {
-    count <- count + 1
-    # print(count)
-    m <- matrix(sample(10,25, replace=1), nrow=5)
-    tryCatch(solve(m), error = function(e) {error <<- 1; message("error")} )
-    if (error == 0) break
-  } 
-  return(m)
-}
+# define an invertible 5x5 matrix, for testing purposes
+testMatrix <- matrix(c(2,9,3,6,4,7,7,3,5,3,2,10,7,8,9,6,6,6,10,6,2,9,2,2,4), nrow=5, ncol=5)
 
 
 
